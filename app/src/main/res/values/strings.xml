@@ -1,0 +1,20 @@
+<resources>
+    <string name="app_name">lesson_14</string>
+    <string name="item_title">Item title</string>
+    <string name="toolbar_title">Serialization</string>
+    <string name="btn_save">btn_save</string>
+    <string name="btn_plus">btn_plus</string>
+
+    <string name="btn_OK">OK</string>
+    <string name="btn_CANCEL">Cancel</string>
+
+    <string name="txt_exit">Выход</string>
+    <string name="txt_save_elements">Сохранять изменения?</string>
+
+    <string name="exceptionInterface">должен реализовывать интерфейс</string>
+
+    <string name="default_title">empty line</string>
+
+    <string name="txt_toast_save">Элементы сохранены</string>
+
+</resources>
