@@ -7,7 +7,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.lesson_14.databinding.ListElementBinding
-import com.example.lesson_14.interfaces.DeleteElementListener
+import com.example.lesson_14.listeners.DeleteElementListener
 import com.example.lesson_14.models.Element
 
 class ElementAdapter(
@@ -35,10 +35,10 @@ class ElementAdapter(
         private val listenerForFragment: DeleteElementListener?
     ) : RecyclerView.ViewHolder(binding.root) {
 
-        private var previousTextWatcher: TextWatcher? = null
+        private var currentTextWatcher: TextWatcher? = null
 
         fun bind(elementItem: Element) {
-            val currentTextWatcher = object : TextWatcher {
+            val newTextWatcher = object : TextWatcher {
                 override fun afterTextChanged(s: Editable?) {}
 
                 override fun beforeTextChanged(
@@ -59,25 +59,26 @@ class ElementAdapter(
                 }
             }
 
-            previousTextWatcher = if (previousTextWatcher == null) {
-                currentTextWatcher
-            } else {
-                binding.itemTitle.removeTextChangedListener(previousTextWatcher)
-                currentTextWatcher
+            if (currentTextWatcher != null) {
+                binding.itemTitle.removeTextChangedListener(currentTextWatcher)
             }
+            currentTextWatcher = newTextWatcher
+
 
             binding.itemTitle.setText(elementItem.safeName)
             binding.txtNumber.text = elementItem.safeQuantity.toString()
 
-            binding.itemTitle.addTextChangedListener(currentTextWatcher)
+            binding.itemTitle.addTextChangedListener(newTextWatcher)
 
             binding.btnBlackMinus.setOnClickListener {
                 listenerForFragment?.deleteElement(elementItem)
             }
 
             binding.btnMinus.setOnClickListener {
-                elementItem.safeQuantity--
-                binding.txtNumber.text = elementItem.safeQuantity.toString()
+                if (elementItem.safeQuantity > 0) {
+                    elementItem.safeQuantity--
+                    binding.txtNumber.text = elementItem.safeQuantity.toString()
+                }
             }
 
             binding.btnPlus.setOnClickListener {

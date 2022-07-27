@@ -9,15 +9,15 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.lesson_14.adapters.ElementAdapter
 import com.example.lesson_14.databinding.ActivityMainBinding
 import com.example.lesson_14.fragments.CustomDialogFragment
-import com.example.lesson_14.interfaces.DeleteElementListener
-import com.example.lesson_14.interfaces.FinishProgramListener
-import com.example.lesson_14.interfaces.SaveElementsListener
+import com.example.lesson_14.listeners.DeleteElementListener
+import com.example.lesson_14.listeners.FinishAppListener
+import com.example.lesson_14.listeners.SaveElementsListener
 import com.example.lesson_14.models.Element
 import java.io.*
 import java.util.*
 
 class MainActivity : AppCompatActivity(),
-    FinishProgramListener,
+    FinishAppListener,
     SaveElementsListener,
     DeleteElementListener {
     companion object {
@@ -94,7 +94,7 @@ class MainActivity : AppCompatActivity(),
         }
     }
 
-    override fun finishProgram() {
+    override fun finishApp() {
         finish()
     }
 
@@ -122,8 +122,8 @@ class MainActivity : AppCompatActivity(),
 
     private fun writeElementsFile() {
         try {
-            ObjectOutputStream(FileOutputStream(File("$filesDir$KEY_FOLDER_NAME$KEY_FILE_NAME"))).use { oos ->
-                oos.writeObject(listElement)
+            ObjectOutputStream(FileOutputStream(File("$filesDir$KEY_FOLDER_NAME$KEY_FILE_NAME"))).use { output ->
+                output.writeObject(listElement)
             }
         } catch (ex: Exception) {
             println(ex.message)
@@ -132,8 +132,8 @@ class MainActivity : AppCompatActivity(),
 
     private fun readElementsFile() {
         try {
-            ObjectInputStream(FileInputStream(File("$filesDir$KEY_FOLDER_NAME$KEY_FILE_NAME"))).use { ois ->
-                listElement = ois.readObject() as ArrayList<Element>
+            ObjectInputStream(FileInputStream(File("$filesDir$KEY_FOLDER_NAME$KEY_FILE_NAME"))).use { input ->
+                listElement = input.readObject() as ArrayList<Element>
             }
         } catch (ex: Exception) {
             println(ex.message)

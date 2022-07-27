@@ -6,24 +6,14 @@ import java.io.Externalizable
 import java.io.ObjectInput
 import java.io.ObjectOutput
 
-class Element(private val name: String?, private val quantity: Int) : Parcelable, Externalizable {
-    constructor() : this(null, 0) {}
+class Element @JvmOverloads constructor(
+    private val name: String? = null,
+    private val quantity: Int = 0
+) : Parcelable, Externalizable {
 
-    var safeName: String = name.orEmpty()
-        set(value) {
-            field = value.ifEmpty {
-                "empty line"
-            }
-        }
+    var safeName: String? = name
 
     var safeQuantity: Int = quantity
-        set(value) {
-            field = if (value < 0) {
-                0
-            } else {
-                value
-            }
-        }
 
     constructor(parcel: Parcel) : this(
         parcel.readString(),
@@ -39,16 +29,6 @@ class Element(private val name: String?, private val quantity: Int) : Parcelable
         return 0
     }
 
-    companion object CREATOR : Parcelable.Creator<Element> {
-        override fun createFromParcel(parcel: Parcel): Element {
-            return Element(parcel)
-        }
-
-        override fun newArray(size: Int): Array<Element?> {
-            return arrayOfNulls(size)
-        }
-    }
-
     override fun writeExternal(p0: ObjectOutput?) {
         p0?.writeObject(safeName)
         p0?.writeObject(safeQuantity)
@@ -57,5 +37,15 @@ class Element(private val name: String?, private val quantity: Int) : Parcelable
     override fun readExternal(p0: ObjectInput?) {
         safeName = p0?.readObject().toString()
         safeQuantity = p0?.readObject() as Int
+    }
+
+    companion object CREATOR : Parcelable.Creator<Element> {
+        override fun createFromParcel(parcel: Parcel): Element {
+            return Element(parcel)
+        }
+
+        override fun newArray(size: Int): Array<Element?> {
+            return arrayOfNulls(size)
+        }
     }
 }
