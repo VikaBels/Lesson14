@@ -7,8 +7,8 @@ import java.io.ObjectInput
 import java.io.ObjectOutput
 
 class Element @JvmOverloads constructor(
-    private val name: String? = null,
-    private val quantity: Int = 0
+    name: String? = null,
+    quantity: Int = 0
 ) : Parcelable, Externalizable {
 
     var safeName: String? = name
@@ -21,8 +21,8 @@ class Element @JvmOverloads constructor(
     )
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
-        parcel.writeString(name)
-        parcel.writeInt(quantity)
+        parcel.writeString(safeName.orEmpty())
+        parcel.writeInt(safeQuantity)
     }
 
     override fun describeContents(): Int {

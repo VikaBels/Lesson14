@@ -142,8 +142,9 @@ class MainActivity : AppCompatActivity(),
 
     private fun setUpAdapter() {
         adapter = ElementAdapter(this, listElement, this)
-
-        bindingMain?.elementList?.adapter = adapter
-        bindingMain?.elementList?.layoutManager = LinearLayoutManager(this)
+        bindingMain?.elementList?.apply {
+            adapter = adapter
+            layoutManager = LinearLayoutManager(context)
+        }
     }
 }
